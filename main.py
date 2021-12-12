@@ -14,7 +14,7 @@ class Distribution2D:
 
         # save necessary values
         self.__samples_used = 0
-        self.__n = arr.shape[0]
+        self.n = arr.shape[0]
         self.__weights = arr.flatten().cumsum()
 
     # Returns (m x 2)-matrix
@@ -28,7 +28,12 @@ class Distribution2D:
         assert(m > 0)
         self.__samples_used += m
         idx = np.searchsorted(self.__weights, np.random.random(m))
-        return np.vstack([idx // self.__n, idx % self.__n]).T
+        return np.vstack([idx // self.n, idx % self.n]).T
+
+
+    def total_variation(self, other) -> float:
+        return np.abs(self.__weights - other.__weights).sum() / 2
+
 
 class Algorithm(metaclass=abc.ABCMeta):
     def __init__(self):
@@ -51,9 +56,31 @@ class NaiveCorrector(Algorithm):
     def improve(self, p: Distribution2D, q: int, eps: float, delta: float) -> np.ndarray:
         return np.vstack([p.sample(q)[:, 0], p.sample(q)[:, 1]]).T
 
+# Test the algorithm `t` times
+def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int):
+    n = p.n
+
+    # Just some sub-quadratic number of samples to get
+    q = max(100, int(n * np.sqrt(n) + 1))
+
+    sample_results = np.zeros((n, n))
+
+    for i in range(t):
+        samples = algo.improve(p, q, eps, delta)
+        for x,y in samples:
+            sample_results[x,y] += 1
+
+    d_TV_independence = 0. # do we have a good way to test for independence?
+    d_TV_distribution = p.total_variation(Distribution2D(sample_results / (t * q)))
+
+    # TODO: find a way to calculate this!
+    print(f"Distance to independence: {d_TV_independence}")
+
+    # TODO: make a confidence interval for this!
+    print(f"Distance to distribution: {d_TV_distribution}")
+
 if __name__ == "__main__":
-    p = Distribution2D(np.eye(4) / 4)
-    # print(p.sample(10))
+    p = Distribution2D(np.ones((4,4)) / 16)
 
     algo = NaiveCorrector()
-    print(algo.improve(p=p, q=10, eps=0.1, delta=0.2))
+    test_1(p, algo, 0.1, 0.2, 100)
