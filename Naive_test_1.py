@@ -122,6 +122,7 @@ def test_1(p: Distribution2D, algo: Algorithm, checker: Test_closeness,eps: floa
 def test_1_1():
     #Create a independent product dist
     ave_dist=0
+    n=1000
     Inde_p=np.zeros((n,n));
     for i in range(n):
         for j in range(n):
@@ -141,7 +142,7 @@ def test_1_1():
         Improved_dist = algo.improve(p, q)
         ave_dist+=checker.dTV(Inde_p,Improved_dist)
     ave_dist=ave_dist/100
-    print("average closeness is:")
+    print("If the origin distribution is an independent distribution, average closeness between improved distribution and original distribution is:")
     print(ave_dist)
 
 
@@ -170,6 +171,7 @@ if __name__ == "__main__":
     #the distance between improved distribution and original one.
     #Q1.1: If the original distreibution is independent,will the sampled disribution be close or far?
     test_1_1()
+
 
 
 
