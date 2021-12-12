@@ -71,7 +71,7 @@ class NaiveCorrector(Algorithm):
             Improver_out_dist[X[x_pos],Y[y_pos]]+=1
         #Convert it to a probability map
         Improver_out_dist=Improver_out_dist/(Improver_out_dist.sum())
-        print(Improver_out_dist)
+        # print(Improver_out_dist)
         return Improver_out_dist
 
 
@@ -110,17 +110,40 @@ def test_1(p: Distribution2D, algo: Algorithm, checker: Test_closeness,eps: floa
     Improved_dist=algo.improve(p,q)
     #Test independent
     d_TV_independence=checker.test_independent(Improved_dist)
-    print(d_TV_independence)
-    # d_TV_distribution=algo.dTV(algo,Improved_dist)
 
     #d_TV_independence = 0. # do we have a good way to test for independence?
     # d_TV_distribution = p.total_variation(Distribution2D(sample_results / (t * q)))
-
     # TODO: find a way to calculate this!
     print(f"Distance to independence: {d_TV_independence}")
-
     # # TODO: make a confidence interval for this!
     # print(f"Distance to distribution: {d_TV_distribution}")
+
+
+def test_1_1():
+    #Create a independent product dist
+    ave_dist=0
+    Inde_p=np.zeros((n,n));
+    for i in range(n):
+        for j in range(n):
+            pos_x=np.random.randint(n)
+            pos_y=np.random.randint(n)
+            Inde_p[pos_x,pos_y]+=1
+    #convert it to probability dist
+    Inde_p=Inde_p/Inde_p.sum()
+    p = Distribution2D(Inde_p)
+    algo = NaiveCorrector()
+    checker=Test_closeness()
+    #sample
+    q = max(100, int(n * np.sqrt(n) + 1))
+
+    #Test it 100 times
+    for k in range(100):
+        Improved_dist = algo.improve(p, q)
+        ave_dist+=checker.dTV(Inde_p,Improved_dist)
+    ave_dist=ave_dist/100
+    print("average closeness is:")
+    print(ave_dist)
+
 
 if __name__ == "__main__":
     '''
@@ -145,6 +168,8 @@ if __name__ == "__main__":
     # as the distribution p. Is is possible to prove it is also e-close?
     #1. I will try to create a random distribution that is e-close to independent first then improve it, and see
     #the distance between improved distribution and original one.
+    #Q1.1: If the original distreibution is independent,will the sampled disribution be close or far?
+    test_1_1()
 
 
 
