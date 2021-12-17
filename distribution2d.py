@@ -31,22 +31,24 @@ class Distribution2D:
     #     .
     #     .
     #  [rm cm]]
-    def sample(self, m=1) -> np.array:
+    def sample(self, m: int=1) -> np.array:
         assert(m > 0)
         self.__samples_used += m
         idx = np.searchsorted(self.__cum_weights, np.random.random(m))
         return np.vstack([idx // self.__n, idx % self.__n]).T
 
     # Does this work?
-    def nearest_independent(self):
+    def nearest_independent(self) -> 'Distirbution2D':
         tmp_arr = self.__weights.reshape((self.__n, self.__n))
         p1 = tmp_arr.sum(axis=1).reshape((self.__n, 1))
         p2 = tmp_arr.sum(axis=0).reshape((1, self.__n))
 
         return Distribution2D(p1.dot(p2))
 
+    # Gets the distance to the nearest independent (product) distrbution 
     def dist_independent(self) -> float:
         return self.total_variation(self.nearest_independent())
 
-    def total_variation(self, other) -> float:
+    # Gets the total variation distance from the matrix 
+    def total_variation(self, other: 'Distribution2D') -> float:
         return np.abs(self.__weights - other.__weights).sum() / 2

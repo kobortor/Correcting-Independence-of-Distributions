@@ -3,6 +3,7 @@ import numpy as np
 
 from distribution2d import Distribution2D
 from algorithm import Algorithm, NaiveCorrector
+from test_suite import *
 
 # Test the algorithm `t` times
 def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int):
@@ -28,17 +29,6 @@ def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int)
 
     # TODO: make a confidence interval for this!
     print(f"Distance to distribution: {d_TV_distribution}")
-
-# Make sure the independence test does not fail the normal test
-def test_independent_1(n: int, t: int = 1):
-    for i in range(t):
-        px = np.random.random((n, 1))
-        py = np.random.random((1, n))
-
-        px /= px.sum()
-        py /= py.sum()
-
-        assert(Distribution2D(px.dot(py)).dist_independent() < 1e-5)
 
 if __name__ == "__main__":
     test_independent_1(n=100, t=100)
