@@ -30,11 +30,11 @@ def test_independent_2(n: int, t: int):
         delta = np.random.randn(n, n)
         delta = (0.5 * eps) * delta / np.abs(delta).sum()
         shifted_dist = tmp_dist + delta
-
+        
         # Clip everything so we don't have negative values or anything 
         low_bound = np.minimum(tmp_dist, np.full((n, n), 1e-6))
         high_bound = np.maximum(tmp_dist, np.full((n, n), 1-1e-6))
         shifted_dist = np.clip(shifted_dist, low_bound, high_bound)
-
+        shifted_dist=shifted_dist/shifted_dist.sum()
         # TODO: Fails
         assert(Distribution2D(shifted_dist).dist_independent() < eps)
