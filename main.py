@@ -34,6 +34,9 @@ if __name__ == "__main__":
     test_independent_1(n=100, t=100)
     print("Independence does not have false negatives!")
 
+    test_independent_2(n=100, t=100)
+    print("Independence distances are correct!")
+
     n = 4
     p = Distribution2D(np.full((n, n), 1 / (n * n)))
     algo = NaiveCorrector()
