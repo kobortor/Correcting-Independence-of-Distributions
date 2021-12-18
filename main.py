@@ -48,7 +48,7 @@ if __name__ == "__main__":
     test_independent_2(n=100, t=100)
     print("Independence distances are correct!")
 
-    test_origin_dist_3(n=10000, t=5)
+    test_origin_dist_3(n=100, t=100)
     print("It is still close to origin p")
    
     n = 4
