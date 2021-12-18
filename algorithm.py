@@ -22,3 +22,19 @@ class NaiveCorrector(Algorithm):
     # Sample q things and take their X values, sample q things and take their Y values, join
     def improve(self, p: Distribution2D, q: int, eps: float, delta: float) -> np.ndarray:
         return np.vstack([p.sample(q)[:, 0], p.sample(q)[:, 1]]).T
+
+class PxPyCorrector(Algorithm):
+    def improve(self, p: Distribution2D, q: int, eps: float, delta: float) -> np.ndarray:
+        # make sure that q is superlinear in n!
+        n = p.n()
+        samples = p.sample(q)
+
+        px, py = np.zeros(n), np.zeros(n)
+        for x, y in samples:
+            px[x] += 1
+            py[y] += 1
+
+        px = (px / px.sum()).reshape((n, 1))
+        py = (py / py.sum()).reshape((1, n))
+
+        return Distribution2D(px.dot(py)).sample(q)

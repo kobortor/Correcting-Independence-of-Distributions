@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 from distribution2d import Distribution2D
-from algorithm import Algorithm, NaiveCorrector
+from algorithm import *
 from test_suite import *
 
 # Test the algorithm `t` times
@@ -48,13 +48,22 @@ if __name__ == "__main__":
     test_independent_2(n=100, t=100)
     print("Independence distances are correct!")
 
-    test_origin_dist_3(n=100, t=100)
-    print("It is still close to origin p")
+    # test_origin_dist_3(n=100, t=100)
+    # print("It is still close to origin p")
    
     n = 4
     p = Distribution2D(np.full((n, n), 1 / (n * n)))
+    eps = 0.01
+    delta = 0.1 # not really used
+    t = 1000
+
+    print("### Testing naive corrector ###")
     algo = NaiveCorrector()
-    test_1(p, algo, eps=0.01, delta=0.1, t=100)
+    test_1(p, algo, eps, delta, t)
+
+    print("### Testing PxPy corrector ###")
+    algo = PxPyCorrector()
+    test_1(p, algo, eps, delta, t)
 
     #TODO: Now we know the algorithm is a improver?How to make it a corrector? Or prove it is a corrector?
     # Since the distribution p is e-close to independent, and the "improved" corrector is also close to
