@@ -40,6 +40,7 @@ def test_independent_2(n: int, t: int):
         assert(Distribution2D(shifted_dist).dist_independent() < eps)
 #Test if the algorithm works
 
+#Test if the algorithm works
 def test_origin_dist_3(n: int, test: int):
     pass_counter=0;
     for i in range(test):
@@ -69,7 +70,7 @@ def test_origin_dist_3(n: int, test: int):
         P_dis=Distribution2D(shifted_dist)
         #1.Sample from shifted_dist
         #r is sample ratio
-        r=int(pow(n,1.99))
+        r=int(pow(n,1.5))
         X_t=np.zeros((1,n))
         Y_t=np.zeros((1,n))
         sampled_set=P_dis.sample(r)
@@ -90,7 +91,6 @@ def test_origin_dist_3(n: int, test: int):
         # print(P_dis.total_variation(t))
         if P_dis.total_variation(t) < 100*eps:
             pass_counter+=1
-#         print(t.dist_independent())
+        # print(t.dist_independent())
     print("pass rate")
     print(pass_counter/test)
-
