@@ -32,10 +32,10 @@ def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int)
     d_TV_distribution = p.total_variation(sample_dist)
 
     # TODO: find a way to calculate this!
-    print(f"Distance to independence: {d_TV_independence}")
+    print("Distance to independence: {:.6f}".format(d_TV_independence))
 
     # TODO: make a confidence interval for this!
-    print(f"Distance to distribution: {d_TV_distribution}")
+    print("Distance to distribution: {:.6f}".format(d_TV_distribution))
 
     # Output statistics of rs
     print("### rate statistics ###")
