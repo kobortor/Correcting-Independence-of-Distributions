@@ -95,4 +95,4 @@ def test_origin_dist_3(n: int, t: int):
         t=Distribution2D(t)
         #3.Test the distance between t and original distribution
         print(P_dis.total_variation(t))
-        assert(P_dis.total_variation(t) < 1000*eps)
+        assert(P_dis.total_variation(t) < 100*eps)
