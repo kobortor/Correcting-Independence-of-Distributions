@@ -20,7 +20,7 @@ def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int)
     rs = []
 
     for i in range(t):
-        p.reset_samples_used()()
+        p.reset_samples_used()
         samples = algo.improve(p, q, eps, delta)
         rs.append(p.get_samples_used() / q)
 
@@ -37,6 +37,7 @@ def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int)
     print(f"Distance to distribution: {d_TV_distribution}")
 
     # Output statistics of rs
+    print("### rate statistics ###")
     print(pd.DataFrame(rs).describe())
 
 if __name__ == "__main__":
