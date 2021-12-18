@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import numpy as np
+import pandas as pd
 
 from distribution2d import Distribution2D
 from algorithm import Algorithm, NaiveCorrector
@@ -16,8 +17,13 @@ def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int)
 
     sample_results = np.zeros((n, n))
 
+    rs = []
+
     for i in range(t):
+        p.reset_samples_used()()
         samples = algo.improve(p, q, eps, delta)
+        rs.append(p.get_samples_used() / q)
+
         for x,y in samples:
             sample_results[x, y] += 1
 
@@ -29,6 +35,9 @@ def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int)
 
     # TODO: make a confidence interval for this!
     print(f"Distance to distribution: {d_TV_distribution}")
+
+    # Output statistics of rs
+    print(pd.DataFrame(rs).describe())
 
 if __name__ == "__main__":
     test_independent_1(n=100, t=100)

@@ -24,6 +24,12 @@ class Distribution2D:
     def n(self) -> int:
         return self.__n
 
+    def reset_samples_used(self):
+        self.__samples_used = 0
+
+    def get_samples_used(self):
+        return self.__samples_used
+
     # Returns (m x 2)-matrix
     # [[r1 c1]
     #  [r2 c2]
