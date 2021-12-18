@@ -48,6 +48,9 @@ if __name__ == "__main__":
     test_independent_2(n=100, t=100)
     print("Independence distances are correct!")
 
+    test_origin_dist_3(n=10000, t=5)
+    print("It is still close to origin p")
+   
     n = 4
     p = Distribution2D(np.full((n, n), 1 / (n * n)))
     algo = NaiveCorrector()
