@@ -27,8 +27,9 @@ def test_1(p: Distribution2D, algo: Algorithm, eps: float, delta: float, t: int)
         for x,y in samples:
             sample_results[x, y] += 1
 
-    d_TV_independence = 0. # do we have a good way to test for independence?
-    d_TV_distribution = p.total_variation(Distribution2D(sample_results / (t * q)))
+    sample_dist = Distribution2D(sample_results / (t * q))
+    d_TV_independence = sample_dist.dist_independent() # do we have a good way to test for independence?
+    d_TV_distribution = p.total_variation(sample_dist)
 
     # TODO: find a way to calculate this!
     print(f"Distance to independence: {d_TV_independence}")
@@ -50,7 +51,7 @@ if __name__ == "__main__":
     n = 4
     p = Distribution2D(np.full((n, n), 1 / (n * n)))
     algo = NaiveCorrector()
-    test_1(p, algo, eps=0.1, delta=0.1, t=100)
+    test_1(p, algo, eps=0.01, delta=0.1, t=100)
 
     #TODO: Now we know the algorithm is a improver?How to make it a corrector? Or prove it is a corrector?
     # Since the distribution p is e-close to independent, and the "improved" corrector is also close to
